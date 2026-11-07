@@ -1,6 +1,24 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { authClient } from "@/app/lib/auth-client";
+
+interface Product {
+    id: number;
+    nameBn: string;
+    today: number;
+    yesterday: number;
+    change: {
+        dir: string;
+        pct: number;
+    };
+    unit: string;
+    markets?: Array<{
+        market: string;
+        division: string;
+    }>;
+}
 
 const todayLabel = new Date().toLocaleDateString("bn-BD", {
     dateStyle: "full",
@@ -8,10 +26,44 @@ const todayLabel = new Date().toLocaleDateString("bn-BD", {
 });
 
 const Banner = () => {
-    
+    const { data: session } = authClient.useSession();
+    const [stats, setStats] = useState({ items: 0, markets: 0, divisions: 0 });
+
+    useEffect(() => {
+        const loadProducts = async () => {
+            try {
+                const res = await fetch("https://openapi.programming-hero.com/api/bazardor/products");
+                if (!res.ok) return;
+                const data: Product[] = await res.json();
+
+                const markets = new Set<string>();
+                const divisions = new Set<string>();
+
+                data.forEach((product) => {
+                    product.markets?.forEach((market) => {
+                        if (market.market) markets.add(market.market);
+                        if (market.division) divisions.add(market.division);
+                    });
+                });
+
+                setStats({
+                    items: data.length,
+                    markets: markets.size,
+                    divisions: divisions.size,
+                });
+            } catch (error) {
+                console.error("Failed to load market products", error);
+            }
+        };
+
+        loadProducts();
+    }, []);
+
+    const isLoggedIn = Boolean(session);
 
 
-        return (
+
+    return (
         <div className="container mx-auto px-4 py-10">
             <div className="flex flex-col items-center justify-between gap-5 rounded-2xl bg-[#f3f5f5] px-6 py-8 md:flex-row md:px-8 md:py-10">
                 <div className="flex flex-col gap-4 md:w-1/2">
@@ -33,7 +85,7 @@ const Banner = () => {
                     </Link>
                 </div>
 
-                {/* {isLoggedIn ? (
+                {isLoggedIn ? (
                     <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
                         <div className="grid grid-cols-3 gap-3">
                             <div className="rounded-xl border border-neutral-200 bg-[#f9fafb] p-3 text-center">
@@ -50,11 +102,11 @@ const Banner = () => {
                             </div>
                         </div>
                     </div>
-                ) : ( */}
+                ) : (
                     <div className="w-full max-w-md">
                         <Image src="/bazar-hero.png" alt="banner" width={400} height={300} className="h-auto w-full" />
                     </div>
-                {/* )} */}
+                )}
             </div>
         </div>
     );

@@ -1,9 +1,9 @@
 
 import Link from "next/link";
-// import { headers } from "next/headers";
-import { notFound, /*redirect*/ } from "next/navigation";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
-// import { auth } from "@/app/lib/auth";
+import { auth } from "@/app/lib/auth";
 
 interface Product {
     id: number;
@@ -38,13 +38,13 @@ async function ProductDetailsContent({
 }: {
     params: Promise<{ id: string }>;
 }) {
-    // const session = await auth.api.getSession({
-    //     headers: await headers(),
-    // });
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
 
-    // if (!session) {
-    //     redirect("/signin");
-    // }
+    if (!session) {
+        redirect("/signin");
+    }
 
     const { id } = await params;
     const response = await fetch("https://openapi.programming-hero.com/api/bazardor/products");
