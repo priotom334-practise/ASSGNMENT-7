@@ -24,7 +24,7 @@ const Marquee = async () => {
 
             <MarqueeText className="py-1" direction="right" duration={10}>
             
-            {data.map((h: Product) => <Link className="hover:underline" href={`/categories/${h.id}`} key={h.id}>
+            {data.map((h: Product) => <Link className="hover:underline" href={`/Categories/${h.id}`} key={h.id}>
                 <span className="mx-1">{h.image}</span>
                 <span className="mx-1">{h.nameBn}</span>
                 <span className="mx-2">{h.today.toLocaleString("bn-BD")} টাকা/কেজি</span>

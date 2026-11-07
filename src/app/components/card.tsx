@@ -28,7 +28,7 @@ const CardContent = async () => {
                     {data.filter((h: Product) => h.today - h.yesterday > 0)
                         .sort((a: Product, b: Product) => b.change.pct - a.change.pct).slice(0, 6)
                         .map((h: Product) => (
-                            <Link key={h.id} href={`/categories/${h.id}`} className="">
+                            <Link key={h.id} href={`/Categories/${h.id}`} className="">
                                 <div className=" border border-gray-200 bg-blue-50 rounded-lg p-4 hover:shadow-md transition-shadow duration-300">
 
                                     <div className="flex item-center gap-2 mb-2">
@@ -68,7 +68,7 @@ const CardContent = async () => {
                     {data.filter((h: Product) => h.today - h.yesterday < 0)
                         .sort((a: Product, b: Product) => b.change.pct - a.change.pct).slice(0, 6)
                         .map((h: Product) => (
-                            <Link key={h.id} href={`/categories/${h.id}`} className="">
+                            <Link key={h.id} href={`/Categories/${h.id}`} className="">
                                 <div className=" border border-gray-200 bg-blue-50 rounded-lg p-4 hover:shadow-md transition-shadow duration-300">
 
                                     <div className="flex item-center gap-2 mb-2">
@@ -107,7 +107,7 @@ const CardContent = async () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {data.map((h: Product) => (
-                        <Link key={h.id} href={`/categories/${h.id}`} className="">
+                        <Link key={h.id} href={`/Categories/${h.id}`} className="">
                             <div className=" border border-gray-200 bg-blue-50 rounded-lg p-4 hover:shadow-md transition-shadow duration-300">
 
                                 <div className="flex item-center gap-2 mb-2">

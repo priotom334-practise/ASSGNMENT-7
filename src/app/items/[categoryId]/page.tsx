@@ -79,7 +79,7 @@ const CategoryItems = async ({
                         unit: string;
                         change: { dir: string; pct: number };
                     }) => (
-                        <Link key={product.id} href={`/categories/${product.id}`} className="block">
+                        <Link key={product.id} href={`/Categories/${product.id}`} className="block">
                             <article className="rounded-lg border border-neutral-200 bg-white p-4 transition-shadow hover:shadow-sm">
                                 <div className="flex items-center gap-3">
                                     <span className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50 text-xl" aria-hidden="true">
