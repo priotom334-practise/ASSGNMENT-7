@@ -20,7 +20,7 @@ const items = async () => {
             {data.map((n: Navs) => (
                 <div key={n.slug} >
                     <div className="flex items-center text-sm font-semibold text-neutral-700 transition-colors hover:text-red-700">
-                        <Link href={`/Items/${n.slug}`} className="flex items-center">
+                        <Link href={`/items/${n.slug}`} className="flex items-center">
                             <span className="text-[15px] leading-none flex h-10 w-10 items-center justify-center">
                                 {n.icon}
                             </span>

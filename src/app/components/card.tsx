@@ -22,7 +22,7 @@ const CardContent = async () => {
         <>
             <div className="container mx-auto px-4 md:px-8 py-4 flex flex-col gap-6">
                 <div>
-                    <h2 className="font-bold text-2xl"><span className="text-red-600">▲</span> আজ দাম বেড়েছে</h2>
+                    <h2 className="font-bold text-red-600 text-2xl">▲ আজ দাম বেড়েছে</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {data.filter((h: Product) => h.today - h.yesterday > 0)
@@ -62,7 +62,7 @@ const CardContent = async () => {
 
             <div className="container mx-auto px-4 md:px-8 py-4 flex flex-col gap-6">
                 <div>
-                    <h2 className="font-bold text-2xl"><span className="text-green-600">▼</span> আজ দাম কমেছে</h2>
+                    <h2 className="font-bold text-green-600 text-2xl">▼ আজ দাম কমেছে</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {data.filter((h: Product) => h.today - h.yesterday < 0)
