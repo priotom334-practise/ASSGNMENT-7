@@ -17,32 +17,40 @@ const SignUpPage = () => {
             return;
         }
         const { data, error } = await authClient.signUp.email({
-            ...user,
-            callbackURL: "/"
-        })
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            callbackURL: "/",
+        });
 
         if (data) {
-            console.log(data);
+            toast.success("অ্যাকাউন্ট তৈরি হয়েছে।");
             router.replace("/");
         }
 
         if (error) {
-            console.log(error);
+            toast.error(error.message || "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।");
         }
-    }
-
-    const handleGoogleSignIn = async () => {
-        await authClient.signIn.social({
-            provider: "google",
-        });
-
     };
 
-    const handleGithubSignIn = async () => {
-        await authClient.signIn.social({
-            provider: "github",
-        });
-    }
+    const handleSocialSignIn = async (provider: "google" | "github") => {
+        try {
+            const { error } = await authClient.signIn.social({
+                provider,
+                callbackURL: "/",
+            });
+
+            if (error) {
+                toast.error(error.message || `${provider} দিয়ে সাইন ইন করা যায়নি।`);
+            }
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : "";
+            toast.error(message || `${provider} দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।`);
+        }
+    };
+
+    const handleGoogleSignIn = () => handleSocialSignIn("google");
+    const handleGithubSignIn = () => handleSocialSignIn("github");
 
     return (
         <div className="flex min-h-[70vh] items-center justify-center bg-[#f5f5f5] px-4 py-10">
