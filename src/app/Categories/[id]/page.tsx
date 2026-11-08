@@ -3,7 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
-import { auth } from "@/app/lib/auth";
+import { getAuth } from "@/app/lib/auth";
 
 interface Product {
     id: number;
@@ -38,6 +38,7 @@ async function ProductDetailsContent({
 }: {
     params: Promise<{ id: string }>;
 }) {
+    const auth = getAuth();
     const session = await auth.api.getSession({
         headers: await headers(),
     });
