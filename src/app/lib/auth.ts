@@ -2,13 +2,20 @@ import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
+type AuthGlobals = typeof globalThis & {
+  mongoClient?: MongoClient;
+  authInstance?: ReturnType<typeof createAuth>;
+};
+
 function createAuth() {
   const mongodbUrl = process.env.MONGODB_URL;
   if (!mongodbUrl) {
     throw new Error("Missing required environment variable: MONGODB_URL");
   }
 
-  const client = new MongoClient(mongodbUrl);
+  const globals = globalThis as AuthGlobals;
+  const client = globals.mongoClient ?? new MongoClient(mongodbUrl);
+  globals.mongoClient = client;
   const db = client.db("Bazar_Dor");
 
   const socialProviders: Record<string, unknown> = {};
@@ -28,6 +35,7 @@ function createAuth() {
   }
 
   return betterAuth({
+    baseURL: process.env.BETTER_AUTH_URL,
     emailAndPassword: {
       enabled: true,
     },
@@ -38,11 +46,8 @@ function createAuth() {
   });
 }
 
-let authInstance: ReturnType<typeof createAuth> | undefined;
-
 export function getAuth() {
-  if (!authInstance) {
-    authInstance = createAuth();
-  }
-  return authInstance;
+  const globals = globalThis as AuthGlobals;
+  globals.authInstance ??= createAuth();
+  return globals.authInstance;
 }
